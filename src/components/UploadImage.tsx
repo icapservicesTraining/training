@@ -1,12 +1,24 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+/**
+ * Composant qui permet d'uploader des images vers le serveur distant nodejs
+ * @returns 
+ */
 export default function UploadImage() {
     const [previewImage, setPreviewImage] = useState<string | null>(null);
-  
+
+    //serveur en remote
+    const serverprod = process.env.RENDER_WS_URL_REMOTE ? process.env.RENDER_WS_URL_REMOTE :'';
+    //serveur en local
+    //const serverlocal = process.env.RENDER_WS_URL_LOCAL ? process.env.RENDER_WS_URL_LOCAL :'';
     const [fileName, setFileName] = useState("");
 
-
+    /**
+     * 
+     * @param 
+     * Enregistrer l'image sur le serveur distant
+     */
     const saveFile = (e: any) => {
       setPreviewImage(null);
       setFileName('');
@@ -18,8 +30,11 @@ export default function UploadImage() {
         uploadFile(e.target.files[0]);
       }
     };
-    const serverprod = process.env.RENDER_WS_URL_REMOTE ? process.env.RENDER_WS_URL_REMOTE :'';
-    //const serverlocal = process.env.RENDER_WS_URL_LOCAL ? process.env.RENDER_WS_URL_LOCAL :'';
+
+  /**
+   * 
+   * @param file Upload l'image en local puis appel saveFile
+   */
     const uploadFile = async (file: any) => {
       const formData = new FormData();
       formData.append("file", file);
@@ -42,7 +57,6 @@ export default function UploadImage() {
         <input id="files" type="file" style={{ visibility: 'hidden', width: '10px' }} />
         {fileName ? fileName : ''}
         {previewImage && <img width={40} height={40} src={previewImage} alt="Preview" />}
-  
       </div>
     );
   }
